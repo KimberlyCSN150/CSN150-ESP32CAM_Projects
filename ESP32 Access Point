@@ -1,7 +1,9 @@
 # Cybersecurity : CSN150
 Project: ESP32 Access Point
 ## Purpose
-Create an ESP32 Wifi Access Point 
+Create an ESP32 Wifi Access Point (AP) for web server projects. 
+This way, you don’t need to be connected to a router to access the web server. 
+We’ll program the ESP32-CAM using Arduino IDE.
 
 ## Equipment
 * [ESP32Cam](https://www.amazon.com/Aideepen-ESP32-CAM-Bluetooth-ESP32-CAM-MB-Arduino/dp/B08P2578LV/ref=sr_1_3?crid=4FY0ECFW0ZX7&keywords=ESP32+Cam&qid=1678902050&sprefix=esp32+cam%2Caps%2C240&sr=8-3)
@@ -19,7 +21,60 @@ https://randomnerdtutorials.com/esp32-cam-access-point-ap-web-server/
 
 
 ## Steps I followed
+ESP32-CAM Video Web Server Access Point (AP)
+In this tutorial, we’ll show you how to set the ESP32 as an access point. As an example, we’ll modify the CameraWebServer project that comes with the Arduino IDE. Then, you should be able to modify any of your projects to set the ESP32-CAM as an access point.
 
+In your Arduino IDE, go to File > Examples > ESP32 > Camera > CameraWebServer.
+
+Then, modify the code to act as an access point as we’ll explain.
+
+Customize the SSID and Password
+You need to define an SSID name and a password to access the ESP32-CAM access point. In this example we’re setting the ESP32 SSID name to ESP32-CAM Access Point. You can modify the name to whatever you want. The password is 123456789, but you can and should also modify it.
+
+const char* ssid = "ESP32-CAM Access Point";
+const char* password = "123456789";
+Setting the ESP32-CAM as an Access Point
+In the setup(), remove the following lines (set the ESP32 as a station):
+
+WiFi.begin(ssid, password);
+while (WiFi.status() != WL_CONNECTED) {
+  delay(500);
+  Serial.print(".");
+}
+Serial.println("");
+Serial.println("WiFi connected");
+And add the following to set the ESP32 as an access point using the softAP() method:
+
+WiFi.softAP(ssid, password);
+There are also other optional parameters you can pass to the softAP() method. Here’s all the parameters:
+
+softAP(const char* ssid, const char* password, int channel, int ssid_hidden, int max_connection)
+ssid (defined earlier): maximum of 63 characters;
+password (defined earlier): minimum of 8 characters; set to NULL if you want the access point to be open
+channel: Wi-Fi channel number (1-13)
+ssid_hidden: (0 = broadcast SSID, 1 = hide SSID)
+max_connection: maximum simultaneous connected clients (1-4)
+This is what you need to include in your web server sketches to set the ESP32-CAM as an access point.
+
+You can download the complete code here.
+
+Connecting to the ESP32-CAM Access Point
+After uploading the code, you can connect to the ESP32-CAM access point to access the web server. You don’t need to connect to a router.
+
+In your smartphone open your Wi-Fi settings and tap the ESP32-CAM Access Point network:
+
+Connect to ESP32-CAM Access Point Smartphone
+Type the password you’ve defined earlier in the code.
+
+Connect to ESP32-CAM Access Point Smartphone Insert Password
+Open your web browser and type the IP address 192.168.4.1. The video streaming web server page should load:
+
+Video Streaming Web Server ESP32-CAM Access Point
+ 
+To connect to the access point on your computer, go to the Network and Internet Settings, select the “ESP32-Access-Point“ and insert the password.
+
+Connect to ESP32-CAM Access Point Computer
+And it’s done! Now, to access the ESP32-CAM web server page, you just need to type the IP address 192.168.4.1 in your browser.
 
 **Problem:** 
 
@@ -27,3 +82,4 @@ https://randomnerdtutorials.com/esp32-cam-access-point-ap-web-server/
 
 
 ## Final Report
+In this project, we learned how to set the ESP32-CAM as an access point in your web server sketches. When the ESP32 is set as an access point, devices with Wi Fi capabilities like your smartphone can connect directly to the ESP without the need to connect to a router.
