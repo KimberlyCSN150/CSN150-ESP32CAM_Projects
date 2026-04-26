@@ -32,7 +32,7 @@ Customize the SSID and Password
 You need to define an SSID name and a password to access the ESP32-CAM access point. In this example we’re setting the ESP32 SSID name to ESP32-CAM Access Point. You can modify the name to whatever you want. The password is 123456789, but you can and should also modify it.
 
 const char* ssid = "ESP32-CAM Access Point";
-const char* password = "123456789";
+const char* password = "CSN150Kimberly";
 Setting the ESP32-CAM as an Access Point
 In the setup(), remove the following lines (set the ESP32 as a station):
 
@@ -77,9 +77,18 @@ Connect to ESP32-CAM Access Point Computer
 And it’s done! Now, to access the ESP32-CAM web server page, you just need to type the IP address 192.168.4.1 in your browser.
 
 **Problem:** 
+The error points to line 13 in your sketch — there's almost certainly a missing semicolon at the end of your ssid declaration. The compiler is reading into line 14 before realizing something went wrong.
+Your code probably looks like this:
+cppconst char *ssid = "YourNetworkName"  // ← missing semicolon!
+const char *password = "CSN150Kimberly";
 
 **Solution:**
 
+Fix it by adding the semicolon:
+cppconst char *ssid = "YourNetworkName";
+const char *password = "CSN150Kimberly";
+
+After adding that semicolon, the password undeclared error on line 110 will also disappear — it was a cascading failure from the first syntax error.
 
 ## Final Report
 In this project, we learned how to set the ESP32-CAM as an access point in your web server sketches. When the ESP32 is set as an access point, devices with Wi Fi capabilities like your smartphone can connect directly to the ESP without the need to connect to a router.
